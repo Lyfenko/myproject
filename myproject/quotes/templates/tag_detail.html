@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h2>{{ tag.name }}</h2>
+  <ul>
+    {% for quote in quotes %}
+      <li>{{ quote.text }}</li>
+    {% empty %}
+      <li>No quotes yet.</li>
+    {% endfor %}
+  </ul>
+{% endblock %}

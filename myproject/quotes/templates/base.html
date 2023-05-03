@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+{% load static %}
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+  <title>{% block title %}My Quotes App{% endblock %}</title>
+</head>
+<body>
+  <header>
+    <nav>
+      <ul>
+        <li><a href="{% url 'home' %}">Home</a></li>
+        <li><a href="{% url 'add_author' %}">Add Author</a></li>
+        <li><a href="{% url 'add_quote' %}">Add Quote</a></li>
+        <li><a href="{% url 'top_tags' %}">Top Tags</a></li>
+        <li><a href="{% url 'login' %}">Login</a></li>
+        <li><a href="{% url 'register' %}">Register</a></li>
+      </ul>
+    </nav>
+  </header>
+  <main>
+    {% block content %}
+    {% endblock %}
+  </main>
+</body>
+</html>

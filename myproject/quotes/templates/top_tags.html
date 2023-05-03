@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h2>Top Ten tags</h2>
+  <ul>
+    {% for tag in tags %}
+      <li>{{ tag.name }} ({{ tag.num_quotes }})</li>
+    {% empty %}
+      <li>No tags yet.</li>
+    {% endfor %}
+  </ul>
+{% endblock %}

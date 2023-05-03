@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h2>Search Results</h2>
+  <form method="get">
+    <input type="text" name="q" value="{{ query }}">
+    <button type="submit">Search</button>
+  </form>
+  <ul>
+    {% for quote in quotes %}
+      <li>{{ quote.text }}</li>
+    {% empty %}
+      <li>No results.</li>
+    {% endfor %}
+  </ul>
+{% endblock %}
