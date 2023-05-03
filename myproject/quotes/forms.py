@@ -15,7 +15,3 @@ class QuoteForm(forms.ModelForm):
         widgets = {
             'tags': forms.TextInput(attrs={'placeholder': 'Enter comma-separated tags'}),
         }
-
-
-class ScrapeForm(forms.Form):
-    url = forms.URLField()
