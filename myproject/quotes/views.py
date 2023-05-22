@@ -1,3 +1,4 @@
+from django.contrib.auth.models import User
 from django.shortcuts import render, redirect
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import login, authenticate, logout
@@ -5,8 +6,55 @@ from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from django.db.models import Q
 from django.db.models import Count
+
+import myproject.settings
 from .models import Author, Quote, Tag
 from .forms import AuthorForm, QuoteForm
+from django.contrib.auth.forms import PasswordResetForm
+from django.contrib.auth.views import PasswordResetView, PasswordResetDoneView, PasswordResetConfirmView, PasswordResetCompleteView
+from django.contrib import messages
+
+
+def password_reset(request):
+    if request.method == 'POST':
+        form = PasswordResetForm(request.POST)
+        if form.is_valid():
+            email = form.cleaned_data['email']
+            associated_users = User.objects.filter(email=email)
+            if associated_users.exists():
+                form.save(
+                    request=request,
+                    from_email=myproject.settings.EMAIL_HOST_USER,
+                    email_template_name='password_reset_email.html',
+                    subject_template_name='password_reset_subject.txt',
+                )
+                messages.success(request, 'Password reset email has been sent. Please check your email to reset your password.')
+                return redirect('password_reset_done')
+            else:
+                messages.error(request, 'No user account is associated with this email. Please enter a valid email address.')
+        else:
+            messages.error(request, 'Invalid form submission. Please check the entered email address.')
+    else:
+        form = PasswordResetForm()
+    return render(request, 'password_reset.html', {'form': form})
+
+
+class MyPasswordResetView(PasswordResetView):
+    template_name = 'password_reset.html'
+    email_template_name = 'password_reset_email.html'
+    subject_template_name = 'password_reset_subject.txt'
+
+
+class MyPasswordResetDoneView(PasswordResetDoneView):
+    template_name = 'password_reset_done.html'
+
+
+class MyPasswordResetConfirmView(PasswordResetConfirmView):
+    template_name = 'password_reset_confirm.html'
+
+
+class MyPasswordResetCompleteView(PasswordResetCompleteView):
+    template_name = 'password_reset_complete.html'
 
 
 def register(request):
